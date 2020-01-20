@@ -1,11 +1,13 @@
 package com.github.simonenkoi.chat
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+import org.springframework.boot.WebApplicationType
+import org.springframework.fu.kofu.application
 
-@SpringBootApplication
-class SpringKotlinChatExampleApplication
+val app = application(WebApplicationType.REACTIVE) {
+    enable(dataConfig)
+    enable(webConfig)
+}
 
-fun main(args: Array<String>) {
-    runApplication<SpringKotlinChatExampleApplication>(*args)
+fun main() {
+    app.run()
 }

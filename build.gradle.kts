@@ -22,6 +22,7 @@ configurations {
 repositories {
     mavenCentral()
     maven("https://plugins.gradle.org/m2/")
+    maven("https://repo.spring.io/milestone")
 }
 
 dependencies {
@@ -31,6 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("org.springframework.fu:spring-fu-kofu:0.2.2")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     compileOnly("org.springframework.boot:spring-boot-gradle-plugin:2.2.3.RELEASE")
     compileOnly("com.google.cloud.tools.jib:com.google.cloud.tools.jib.gradle.plugin:1.8.0")
