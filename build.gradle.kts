@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.2.3.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
+    id("com.google.cloud.tools.jib") version "1.8.0"
     kotlin("jvm") version "1.3.61"
     kotlin("plugin.spring") version "1.3.61"
 }
@@ -20,6 +21,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven("https://plugins.gradle.org/m2/")
 }
 
 dependencies {
@@ -30,6 +32,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    compileOnly("org.springframework.boot:spring-boot-gradle-plugin:2.2.3.RELEASE")
+    compileOnly("com.google.cloud.tools.jib:com.google.cloud.tools.jib.gradle.plugin:1.8.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
@@ -44,5 +48,22 @@ tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "1.8"
+    }
+}
+
+jib {
+    to {
+        image = "simonenkoi/spring-kotlin-chat-example"
+        tags = setOf("$version")
+        auth {
+            username = System.getenv("DOCKERHUB_USERNAME")
+            password = System.getenv("DOCKERHUB_PASSWORD")
+        }
+    }
+    container {
+        labels = mapOf(
+            "maintainer" to "Ignat Simonenko <simonenkoignat@gmail.com>"
+        )
+        ports = listOf("8080")
     }
 }
