@@ -1,11 +1,6 @@
 package com.github.simonenkoi.chat
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.awaitBody
@@ -17,23 +12,13 @@ class ChatMessageHandler(
     private val repository: MessageRepository
 ) {
 
-    @ExperimentalCoroutinesApi
     suspend fun listApi(request: ServerRequest): ServerResponse {
-        val findAll: Flow<Message> = findAll()
+        val findAll: Flow<Message> = repository.streamAll()
+
         return ServerResponse
             .ok()
             .sse()
             .bodyAndAwait(findAll)
-    }
-
-    @ExperimentalCoroutinesApi
-    private suspend fun findAll(): Flow<Message> = flow {
-        val streamAll = repository.streamAll()
-        if (streamAll.count() == 0) {
-            delay(1_000)
-            findAll()
-        }
-        streamAll.onEach { emit(it) }
     }
 
 
