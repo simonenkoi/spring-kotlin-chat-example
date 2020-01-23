@@ -1,10 +1,10 @@
-package com.github.simonenkoi.chat
+package com.github.simonenkoi.chat.feature.message.repository
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "messages")
-data class Message(
-    @Id val login: String,
+data class MessageDocument(
+    @Id val id: String? = null,
     val text: String
 )

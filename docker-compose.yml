@@ -11,8 +11,8 @@ services:
       - 27017:27017
     command: mongod --smallfiles --logpath=/dev/null # --quiet
 
-  spring-kotlin-chat-app:
-    image: "simonenkoi/spring-kotlin-chat-exampole:0.0.1-SNAPSHOT"
+  application:
+    image: "simonenkoi/spring-kotlin-chat-example:0.0.1-SNAPSHOT"
     ports:
       - "8080:8080"
     command: ["java","-jar","-Dspring.profiles.active=local", "/opt/${SERVICE_NAME}/app.jar"]
